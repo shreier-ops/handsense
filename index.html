@@ -1,39 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HandSense ג€” Physiotherapy Game</title>
+    <title>HandSense - Physiotherapy Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!--
-    ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-    IMAGEN PROMPT SUGGESTIONS (generate ~100 images via Gemini Pro)
-    ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-    Difficulty 1 (clear, frontal):
-      "A realistic photo of an open RIGHT/LEFT human hand, palm facing the camera,
-       fingers spread, clean white background, neutral lighting, high detail"
-
-    Difficulty 2 (slight angle):
-      "Realistic photo of a RIGHT/LEFT hand, back of hand facing camera,
-       slightly angled 15 degrees, light gray background"
-
-    Difficulty 3 (everyday life):
-      "Realistic photo of a RIGHT/LEFT hand holding a coffee cup,
-       natural lighting, kitchen background, 45 degree angle"
-
-    Difficulty 4 (with forearm/elbow):
-      "Realistic photo of a RIGHT/LEFT arm with hand visible,
-       elbow to fingertips, side view, gym or therapy room background"
-
-    Difficulty 5 (challenging):
-      "Realistic photo of a RIGHT/LEFT hand from extreme overhead angle,
-       fingers partially curled, complex lighting, with shoulder visible"
-
-    After generating: fill in the 'url' fields in the IMAGES array below.
-    ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-    -->
-
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -63,7 +34,6 @@
             padding: 16px;
         }
 
-        /* ג”€ג”€ SCREENS ג”€ג”€ */
         .screen { display: none; width: 100%; max-width: 560px; animation: fadeIn .3s ease; }
         .screen.active { display: block; }
 
@@ -72,10 +42,9 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ג”€ג”€ CARD ג”€ג”€ */
         .card { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); padding: 32px; }
 
-        /* ג”€ג”€ BUTTONS ג”€ג”€ */
+        /* BUTTONS */
         .btn {
             display: block; width: 100%; padding: 14px;
             border: none; border-radius: 12px;
@@ -88,9 +57,15 @@
         .btn-secondary:hover { background: #D1D5DB; }
         .btn + .btn { margin-top: 10px; }
 
-        /* ג”€ג”€ MENU ג”€ג”€ */
+        /* MENU LOGO */
         .menu-logo { text-align: center; margin-bottom: 28px; }
-        .menu-logo .logo-icon { font-size: 52px; display: block; margin-bottom: 6px; }
+        .logo-mark {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 72px; height: 72px; border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary), #6366F1);
+            margin-bottom: 10px;
+        }
+        .logo-mark svg { width: 40px; height: 40px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .menu-logo h1 { font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -.5px; }
         .menu-logo p  { color: var(--muted); font-size: 14px; margin-top: 3px; }
 
@@ -109,18 +84,26 @@
             background: #fff; cursor: pointer; text-align: center; transition: all .2s;
             font-family: 'Inter', sans-serif;
         }
-        .mode-btn:hover   { border-color: var(--primary); background: #EFF6FF; }
-        .mode-btn.active  { border-color: var(--primary); background: #EFF6FF; }
-        .mode-btn .m-icon { font-size: 28px; display: block; margin-bottom: 5px; }
-        .mode-btn .m-name { font-weight: 700; font-size: 15px; }
-        .mode-btn .m-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+        .mode-btn:hover  { border-color: var(--primary); background: #EFF6FF; }
+        .mode-btn.active { border-color: var(--primary); background: #EFF6FF; }
+        .mode-icon-wrap {
+            width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 8px;
+            display: flex; align-items: center; justify-content: center;
+            background: #EFF6FF;
+        }
+        .mode-icon-wrap svg { width: 24px; height: 24px; }
+        .mode-btn.active .mode-icon-wrap { background: var(--primary); }
+        .mode-btn.active .mode-icon-wrap svg { stroke: #fff; }
+        .mode-btn:not(.active) .mode-icon-wrap svg { stroke: var(--primary); }
+        .m-name { font-weight: 700; font-size: 15px; }
+        .m-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
         .best-row { margin-top: 16px; padding: 12px 16px; background: #F9FAFB;
                     border-radius: 10px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
         .best-row .label { color: var(--muted); }
         .best-row .val { font-weight: 800; color: var(--primary); font-size: 16px; }
 
-        /* ג”€ג”€ GAME HEADER ג”€ג”€ */
+        /* GAME HEADER */
         .game-header {
             display: flex; align-items: center; justify-content: space-between;
             margin-bottom: 12px;
@@ -128,20 +111,25 @@
         .round-label { font-size: 13px; font-weight: 600; color: var(--muted); }
         .score-val   { font-size: 22px; font-weight: 800; color: var(--primary); }
         .streak-pill {
-            display: flex; align-items: center; gap: 3px;
+            display: flex; align-items: center; gap: 4px;
             background: #FEF3C7; color: #D97706;
             padding: 4px 10px; border-radius: 20px;
             font-size: 13px; font-weight: 700; transition: all .3s;
         }
         .streak-pill.hot { background: #FEE2E2; color: #DC2626; }
+        .streak-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #D97706; transition: background .3s;
+        }
+        .streak-pill.hot .streak-dot { background: #DC2626; }
 
-        /* ג”€ג”€ PROGRESS DOTS ג”€ג”€ */
+        /* PROGRESS DOTS */
         .progress-row { display: flex; gap: 5px; margin-bottom: 12px; }
         .pdot { flex: 1; height: 5px; border-radius: 3px; background: var(--border); transition: background .3s; }
         .pdot.done    { background: var(--success); }
         .pdot.current { background: var(--primary); }
 
-        /* ג”€ג”€ TIMER ג”€ג”€ */
+        /* TIMER */
         .timer-wrap { height: 6px; background: var(--border); border-radius: 3px;
                       margin-bottom: 12px; overflow: hidden; display: none; }
         .timer-wrap.on { display: block; }
@@ -149,13 +137,13 @@
         .timer-bar.warn { background: var(--warning); }
         .timer-bar.crit { background: var(--danger); }
 
-        /* ג”€ג”€ MULTIPLIER ג”€ג”€ */
+        /* MULTIPLIER */
         .mult-row { text-align: center; min-height: 20px; font-size: 13px; font-weight: 600;
                     color: var(--muted); margin-bottom: 14px; }
-        .mult-row .x2  { color: var(--warning); font-size: 14px; }
-        .mult-row .x3  { color: var(--danger);  font-size: 14px; }
+        .mult-row .x2 { color: var(--warning); font-size: 14px; font-weight: 800; }
+        .mult-row .x3 { color: var(--danger);  font-size: 14px; font-weight: 800; }
 
-        /* ג”€ג”€ IMAGE ג”€ג”€ */
+        /* IMAGE */
         .img-wrap {
             position: relative; border-radius: 14px; overflow: hidden;
             margin-bottom: 20px; background: #F3F4F6;
@@ -167,30 +155,39 @@
             align-items: center; justify-content: center; gap: 10px; padding: 20px;
             text-align: center;
         }
-        .img-placeholder .ph-icon  { font-size: 72px; }
-        .img-placeholder .ph-label { font-size: 12px; font-weight: 600; opacity: .45; }
+        .ph-label { font-size: 12px; font-weight: 600; opacity: .45; }
         .diff-badge {
             position: absolute; top: 10px; right: 10px;
             background: rgba(0,0,0,.45); color: #fff;
             padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
         }
 
-        /* ג”€ג”€ ANSWER BUTTONS ג”€ג”€ */
+        /* ANSWER BUTTONS */
         .answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .ans-btn {
             padding: 18px 12px; border: 3px solid var(--border); border-radius: 14px;
             background: #fff; cursor: pointer; font-family: 'Inter', sans-serif;
             font-size: 17px; font-weight: 700; color: var(--text);
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
             transition: all .15s;
         }
-        .ans-btn .hand { font-size: 34px; }
+        .hand-arrow {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: #EFF6FF; display: flex; align-items: center; justify-content: center;
+        }
+        .hand-arrow svg { width: 22px; height: 22px; stroke: var(--primary); stroke-width: 2.5; stroke-linecap: round; fill: none; }
         .ans-btn:hover:not(:disabled) { border-color: var(--primary); background: #EFF6FF; transform: translateY(-2px); }
+        .ans-btn:hover:not(:disabled) .hand-arrow { background: var(--primary); }
+        .ans-btn:hover:not(:disabled) .hand-arrow svg { stroke: #fff; }
         .ans-btn:disabled { cursor: not-allowed; opacity: .75; }
         .ans-btn.correct { border-color: var(--success); background: #D1FAE5; }
+        .ans-btn.correct .hand-arrow { background: var(--success); }
+        .ans-btn.correct .hand-arrow svg { stroke: #fff; }
         .ans-btn.wrong   { border-color: var(--danger);  background: #FEE2E2; }
+        .ans-btn.wrong .hand-arrow { background: var(--danger); }
+        .ans-btn.wrong .hand-arrow svg { stroke: #fff; }
 
-        /* ג”€ג”€ FEEDBACK TOAST ג”€ג”€ */
+        /* FEEDBACK TOAST */
         .toast-wrap { position: fixed; inset: 0; display: flex; align-items: center;
                       justify-content: center; pointer-events: none; z-index: 200; }
         .toast {
@@ -198,28 +195,40 @@
             box-shadow: 0 8px 40px rgba(0,0,0,.14); text-align: center;
             transform: scale(0);
             transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+            min-width: 180px;
         }
         .toast.show { transform: scale(1); }
-        .toast .t-icon  { font-size: 38px; }
-        .toast .t-text  { font-size: 18px; font-weight: 700; margin-top: 4px; }
-        .toast .t-pts   { font-size: 24px; font-weight: 800; color: var(--primary); }
+        .toast-icon {
+            width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .toast-icon svg { width: 28px; height: 28px; stroke: #fff; stroke-width: 3; stroke-linecap: round; fill: none; }
+        .toast-icon.ok   { background: var(--success); }
+        .toast-icon.fail { background: var(--danger); }
+        .toast-icon.time { background: var(--warning); }
+        .t-text { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
         .toast.ok   .t-text { color: var(--success); }
         .toast.fail .t-text { color: var(--danger); }
+        .t-pts  { font-size: 24px; font-weight: 800; color: var(--primary); }
 
-        /* ג”€ג”€ RESULTS ג”€ג”€ */
+        /* RESULTS */
         .res-header { text-align: center; margin-bottom: 24px; }
-        .res-icon   { font-size: 54px; display: block; margin-bottom: 6px; }
-        .res-title  { font-size: 24px; font-weight: 800; }
-        .res-sub    { color: var(--muted); font-size: 14px; margin-top: 3px; }
-        .score-big  { text-align: center; font-size: 64px; font-weight: 800;
-                      color: var(--primary); letter-spacing: -2px; margin: 18px 0; }
+        .res-icon-wrap {
+            width: 64px; height: 64px; border-radius: 20px; margin: 0 auto 12px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .res-icon-wrap svg { width: 36px; height: 36px; stroke: #fff; stroke-width: 2; fill: none; stroke-linecap: round; }
+        .res-title { font-size: 24px; font-weight: 800; }
+        .res-sub   { color: var(--muted); font-size: 14px; margin-top: 3px; }
+        .score-big { text-align: center; font-size: 64px; font-weight: 800;
+                     color: var(--primary); letter-spacing: -2px; margin: 18px 0; }
 
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
         .stat { background: #F9FAFB; border-radius: 12px; padding: 16px; text-align: center; }
         .stat .sv { font-size: 26px; font-weight: 800; }
         .stat .sl { font-size: 12px; color: var(--muted); margin-top: 2px; font-weight: 600; }
 
-        /* ג”€ג”€ LEADERBOARD ג”€ג”€ */
+        /* LEADERBOARD */
         .lb-title { text-align: center; font-size: 22px; font-weight: 800; margin-bottom: 6px; }
         .lb-sub   { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 20px; }
         .lb-list  { list-style: none; }
@@ -228,60 +237,86 @@
         .lb-item:last-child { border-bottom: none; }
         .lb-rank  { width: 30px; height: 30px; border-radius: 50%; background: var(--border);
                     display: flex; align-items: center; justify-content: center;
-                    font-weight: 700; font-size: 13px; flex-shrink: 0; margin-right: 12px; }
+                    font-weight: 800; font-size: 13px; flex-shrink: 0; margin-right: 12px; }
         .lb-rank.g { background: #FEF3C7; color: #D97706; }
         .lb-rank.s { background: #F3F4F6; color: #6B7280; }
         .lb-rank.b { background: #FEF3C7; color: #92400E; }
         .lb-name  { flex: 1; font-weight: 600; }
         .lb-score { font-weight: 800; color: var(--primary); font-size: 17px; }
         .lb-meta  { font-size: 11px; color: var(--muted); text-align: right; margin-left: 8px; }
+
+        /* MODE BADGE */
+        .mode-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 10px;
+            font-size: 11px; font-weight: 700;
+        }
+        .mode-badge.normal { background: #D1FAE5; color: #065F46; }
+        .mode-badge.timed  { background: #FEE2E2; color: #DC2626; }
     </style>
 </head>
 <body>
 
-<!-- ג•ג• MENU ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• -->
+<!-- MENU -->
 <div id="s-menu" class="screen active">
     <div class="card">
         <div class="menu-logo">
-            <span class="logo-icon">נ–ן¸</span>
+            <div class="logo-mark">
+                <svg viewBox="0 0 40 40">
+                    <path d="M20 8 C20 8 12 10 12 20 L12 28 C12 32 16 34 20 34 C24 34 28 32 28 28 L28 20 C28 10 20 8 20 8Z"/>
+                    <line x1="20" y1="20" x2="20" y2="28"/>
+                    <line x1="16" y1="22" x2="24" y2="22"/>
+                </svg>
+            </div>
             <h1>HandSense</h1>
             <p>Physiotherapy Training Game</p>
         </div>
 
         <label class="form-label">Your Name</label>
-        <input id="inp-name" class="form-input" type="text" placeholder="Enter your nameג€¦" maxlength="20">
+        <input id="inp-name" class="form-input" type="text" placeholder="Enter your name..." maxlength="20">
 
         <label class="form-label">Game Mode</label>
         <div class="mode-grid">
             <button class="mode-btn active" id="m-normal" onclick="setMode('normal')">
-                <span class="m-icon">נ§˜</span>
-                <span class="m-name">Normal</span>
-                <span class="m-desc">Take your time</span>
+                <div class="mode-icon-wrap">
+                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" fill="none">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7 L12 12 L15 15"/>
+                    </svg>
+                </div>
+                <div class="m-name">Normal</div>
+                <div class="m-desc">Take your time</div>
             </button>
             <button class="mode-btn" id="m-timed" onclick="setMode('timed')">
-                <span class="m-icon">ג¡</span>
-                <span class="m-name">Time Attack</span>
-                <span class="m-desc">8 seconds per round</span>
+                <div class="mode-icon-wrap">
+                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" fill="none">
+                        <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                    </svg>
+                </div>
+                <div class="m-name">Time Attack</div>
+                <div class="m-desc">8 seconds per round</div>
             </button>
         </div>
 
-        <button class="btn btn-primary" onclick="startGame()">Start Game ג†’</button>
-        <button class="btn btn-secondary" onclick="goLeaderboard()">נ† Leaderboard</button>
+        <button class="btn btn-primary" onclick="startGame()">Start Game &rarr;</button>
+        <button class="btn btn-secondary" onclick="goLeaderboard()">&#9733; Leaderboard</button>
 
         <div class="best-row">
             <span class="label">Your best score:</span>
-            <span class="val" id="best-val">ג€”</span>
+            <span class="val" id="best-val">--</span>
         </div>
     </div>
 </div>
 
-<!-- ג•ג• GAME ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• -->
+<!-- GAME -->
 <div id="s-game" class="screen">
     <div class="card">
         <div class="game-header">
             <span class="round-label">Round <span id="g-round">1</span>/10</span>
             <span class="score-val" id="g-score">0</span>
-            <span class="streak-pill" id="g-streak">נ”¥ <span id="g-streak-n">0</span></span>
+            <span class="streak-pill" id="g-streak">
+                <span class="streak-dot"></span>
+                Streak <span id="g-streak-n">0</span>
+            </span>
         </div>
 
         <div class="progress-row" id="g-dots"></div>
@@ -291,123 +326,111 @@
         <div class="img-wrap">
             <img id="g-img" alt="Hand image">
             <div class="img-placeholder" id="g-ph"></div>
-            <div class="diff-badge" id="g-diff">Lvl 1</div>
+            <div class="diff-badge" id="g-diff">Level 1</div>
         </div>
 
         <div class="answer-grid">
             <button class="ans-btn" id="btn-L" onclick="answer('left')">
-                <span class="hand">נ«²</span>Left Hand
+                <div class="hand-arrow">
+                    <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+                </div>
+                Left Hand
             </button>
             <button class="ans-btn" id="btn-R" onclick="answer('right')">
-                <span class="hand">נ«±</span>Right Hand
+                <div class="hand-arrow">
+                    <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+                </div>
+                Right Hand
             </button>
         </div>
     </div>
 </div>
 
-<!-- ג•ג• RESULTS ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• -->
+<!-- RESULTS -->
 <div id="s-results" class="screen">
     <div class="card">
         <div class="res-header">
-            <span class="res-icon" id="r-icon">נ‰</span>
+            <div class="res-icon-wrap" id="r-icon-wrap" style="background:var(--primary)">
+                <svg viewBox="0 0 24 24" id="r-icon-svg">
+                    <polyline points="20,6 9,17 4,12"/>
+                </svg>
+            </div>
             <div class="res-title" id="r-title">Well done!</div>
-            <div class="res-sub" id="r-sub">Here's how you did</div>
+            <div class="res-sub" id="r-sub">Here is how you did</div>
         </div>
         <div class="score-big" id="r-score">0</div>
         <div class="stats-grid">
             <div class="stat"><div class="sv" id="r-acc">0%</div><div class="sl">Accuracy</div></div>
             <div class="stat"><div class="sv" id="r-streak">0</div><div class="sl">Best Streak</div></div>
             <div class="stat"><div class="sv" id="r-correct">0/10</div><div class="sl">Correct</div></div>
-            <div class="stat"><div class="sv" id="r-mode">ג€”</div><div class="sl">Mode</div></div>
+            <div class="stat"><div class="sv" id="r-mode">--</div><div class="sl">Mode</div></div>
         </div>
-        <button class="btn btn-primary"    onclick="startGame()">ג–¶ Play Again</button>
-        <button class="btn btn-secondary"  onclick="goLeaderboard()">נ† Leaderboard</button>
-        <button class="btn btn-secondary"  onclick="showScreen('s-menu')">ג† Menu</button>
+        <button class="btn btn-primary"   onclick="startGame()">&#9654; Play Again</button>
+        <button class="btn btn-secondary" onclick="goLeaderboard()">&#9733; Leaderboard</button>
+        <button class="btn btn-secondary" onclick="showScreen('s-menu')">&larr; Menu</button>
     </div>
 </div>
 
-<!-- ג•ג• LEADERBOARD ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• -->
+<!-- LEADERBOARD -->
 <div id="s-lb" class="screen">
     <div class="card">
-        <div class="lb-title">נ† Leaderboard</div>
-        <div class="lb-sub">Local high scores ֲ· <span id="lb-mode-filter">All modes</span></div>
+        <div class="lb-title">&#9733; Leaderboard</div>
+        <div class="lb-sub">Local high scores</div>
         <ul class="lb-list" id="lb-list"></ul>
-        <button class="btn btn-secondary" style="margin-top:20px" onclick="showScreen('s-menu')">ג† Back</button>
-
-        <!-- Firebase note -->
-        <p style="margin-top:16px; font-size:11px; color:var(--muted); text-align:center; line-height:1.5">
-            For online leaderboard: see Firebase setup comments in source code.
-        </p>
+        <button class="btn btn-secondary" style="margin-top:20px" onclick="showScreen('s-menu')">&larr; Back</button>
     </div>
 </div>
 
-<!-- ג•ג• FEEDBACK TOAST ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• -->
+<!-- FEEDBACK TOAST -->
 <div class="toast-wrap">
     <div class="toast" id="toast">
-        <div class="t-icon" id="t-icon">ג…</div>
+        <div class="toast-icon ok" id="t-icon-wrap">
+            <svg viewBox="0 0 24 24" id="t-icon-svg"><polyline points="20,6 9,17 4,12"/></svg>
+        </div>
         <div class="t-text" id="t-text">Correct!</div>
         <div class="t-pts"  id="t-pts">+100</div>
     </div>
 </div>
 
 <script>
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  IMAGE DATABASE
-//  ג€¢ Set url: "https://..." to show a real photo (from Imagen etc.)
-//  ג€¢ Leave url: null to show a placeholder (for testing)
-//  ג€¢ answer: 'left' | 'right'
-//  ג€¢ difficulty: 1 (easy) ג†’ 5 (hard)
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
 const DB = [
-    // ג”€ג”€ Diff 1 ג€” ׳›׳£ ׳™׳“ ׳₪׳×׳•׳—׳”, ׳¨׳§׳¢ ׳׳‘׳ ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
     { id:  1, url: 'images/left-2.jpg',   answer: 'left',  difficulty: 1, tags: ['palm',    'white_bg'] },
     { id:  2, url: 'images/left-3.jpg',   answer: 'left',  difficulty: 1, tags: ['back',    'white_bg'] },
     { id:  3, url: 'images/right-4.jpg',  answer: 'right', difficulty: 1, tags: ['palm',    'white_bg'] },
     { id:  4, url: 'images/right-5.jpg',  answer: 'right', difficulty: 1, tags: ['palm',    'white_bg'] },
-    // ג”€ג”€ Diff 2 ג€” ׳’׳‘ ׳™׳“, ׳–׳•׳•׳™׳× ׳§׳׳” ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
     { id:  5, url: 'images/left-5.jpg',   answer: 'left',  difficulty: 2, tags: ['back',    'angle'] },
     { id:  6, url: 'images/right-7.jpg',  answer: 'right', difficulty: 2, tags: ['back',    'angle'] },
-    // ג”€ג”€ Diff 3 ג€” ׳׳‘׳•׳’׳¨ / ׳™׳•׳׳™׳•׳׳™ / ׳׳¦׳‘׳¢׳•׳× ׳׳§׳•׳₪׳׳•׳× ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
-    { id:  7, url: 'images/left-4.jpg',   answer: 'left',  difficulty: 3, tags: ['back',    'elderly', 'table'] },
-    { id:  8, url: 'images/left-6.jpg',   answer: 'left',  difficulty: 3, tags: ['palm',    'elderly', 'table'] },
+    { id:  7, url: 'images/left-4.jpg',   answer: 'left',  difficulty: 3, tags: ['back',    'elderly'] },
+    { id:  8, url: 'images/left-6.jpg',   answer: 'left',  difficulty: 3, tags: ['palm',    'elderly'] },
     { id:  9, url: 'images/left-8.jpg',   answer: 'left',  difficulty: 3, tags: ['palm',    'curled'] },
     { id: 10, url: 'images/right-3.jpg',  answer: 'right', difficulty: 3, tags: ['everyday','keyboard'] },
     { id: 11, url: 'images/right-9.jpg',  answer: 'right', difficulty: 3, tags: ['palm',    'curled'] },
     { id: 12, url: 'images/right-10.jpg', answer: 'right', difficulty: 3, tags: ['everyday','coffee'] },
-    // ג”€ג”€ Diff 4 ג€” ׳¢׳ ׳׳¨׳₪׳§/׳›׳×׳£, ׳₪׳™׳–׳™׳•׳×׳¨׳₪׳™׳”/׳—׳•׳¥ ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
     { id: 13, url: 'images/left-1.jpg',   answer: 'left',  difficulty: 4, tags: ['shoulder','physio'] },
     { id: 14, url: 'images/right-2.jpg',  answer: 'right', difficulty: 4, tags: ['unusual', 'outdoor'] },
     { id: 15, url: 'images/right-6.jpg',  answer: 'right', difficulty: 4, tags: ['shoulder','physio'] },
     { id: 16, url: 'images/right-8.jpg',  answer: 'right', difficulty: 4, tags: ['curled',  'outdoor'] },
-    // ג”€ג”€ Diff 5 ג€” ׳–׳¨׳•׳¢ ׳׳׳׳”, ׳—׳•׳¥, ׳׳׳×׳’׳¨ ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
     { id: 17, url: 'images/left-7.jpg',   answer: 'left',  difficulty: 5, tags: ['full_arm','outdoor'] },
     { id: 18, url: 'images/right-1.jpg',  answer: 'right', difficulty: 5, tags: ['full_arm','outdoor'] },
 ];
 
 const DIFF_STYLE = {
-    1: { bg: '#DBEAFE', color: '#1E40AF', label: 'Level 1 ֲ· Easy'   },
-    2: { bg: '#D1FAE5', color: '#065F46', label: 'Level 2'          },
-    3: { bg: '#FEF9C3', color: '#854D0E', label: 'Level 3'          },
-    4: { bg: '#FFEDD5', color: '#9A3412', label: 'Level 4'          },
-    5: { bg: '#FCE7F3', color: '#9D174D', label: 'Level 5 ֲ· Hard'   },
+    1: { bg: '#DBEAFE', color: '#1E40AF', label: 'Level 1 - Easy' },
+    2: { bg: '#D1FAE5', color: '#065F46', label: 'Level 2'        },
+    3: { bg: '#FEF9C3', color: '#854D0E', label: 'Level 3'        },
+    4: { bg: '#FFEDD5', color: '#9A3412', label: 'Level 4'        },
+    5: { bg: '#FCE7F3', color: '#9D174D', label: 'Level 5 - Hard' },
 };
 
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  STATE
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
 const G = {
     name: 'Player', mode: 'normal',
     round: 0, totalRounds: 10,
     score: 0, streak: 0, maxStreak: 0, correct: 0,
-    queue: [],
-    answered: false,
+    queue: [], answered: false,
     timerID: null, timeLeft: 8000, timeTaken: 0,
 };
 
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  HELPERS
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-const $  = id => document.getElementById(id);
+const $ = id => document.getElementById(id);
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
 function shuffle(arr) {
@@ -422,9 +445,6 @@ function multiplier() {
     return G.streak >= 5 ? 3 : G.streak >= 3 ? 2 : 1;
 }
 
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  GAME FLOW
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
 function setMode(m) {
     G.mode = m;
     $('m-normal').classList.toggle('active', m === 'normal');
@@ -442,13 +462,9 @@ function buildQueue() {
 
 function startGame() {
     G.name      = $('inp-name').value.trim() || 'Player';
-    G.round     = 0;
-    G.score     = 0;
-    G.streak    = 0;
-    G.maxStreak = 0;
-    G.correct   = 0;
+    G.round     = 0; G.score  = 0; G.streak = 0;
+    G.maxStreak = 0; G.correct = 0;
     G.queue     = buildQueue();
-
     showScreen('s-game');
     buildDots();
     nextRound();
@@ -456,7 +472,7 @@ function startGame() {
 
 function buildDots() {
     $('g-dots').innerHTML = Array.from({ length: G.totalRounds })
-        .map((_, i) => `<div class="pdot" id="pd-${i}"></div>`).join('');
+        .map((_, i) => '<div class="pdot" id="pd-' + i + '"></div>').join('');
 }
 
 function nextRound() {
@@ -466,76 +482,57 @@ function nextRound() {
     const img = G.queue[G.round];
     const ds  = DIFF_STYLE[img.difficulty];
 
-    // Header
     $('g-round').textContent    = G.round + 1;
     $('g-score').textContent    = G.score.toLocaleString();
     $('g-streak-n').textContent = G.streak;
     $('g-streak').className     = 'streak-pill' + (G.streak >= 5 ? ' hot' : '');
 
-    // Dots
     for (let i = 0; i < G.totalRounds; i++) {
-        $(`pd-${i}`).className =
-            'pdot' + (i < G.round ? ' done' : i === G.round ? ' current' : '');
+        $('pd-' + i).className = 'pdot' + (i < G.round ? ' done' : i === G.round ? ' current' : '');
     }
 
-    // Multiplier row
     updateMult();
-
-    // Difficulty badge
     $('g-diff').textContent = ds.label;
 
-    // Image
     if (img.url) {
-        $('g-img').src         = img.url;
+        $('g-img').src = img.url;
         $('g-img').style.display = 'block';
         $('g-ph').style.display  = 'none';
     } else {
         $('g-img').style.display = 'none';
         $('g-ph').style.display  = 'flex';
         $('g-ph').style.background = ds.bg;
-        $('g-ph').innerHTML = `
-            <div class="ph-icon">נ–ן¸</div>
-            <div class="ph-label" style="color:${ds.color}">
-                Image #${img.id} ֲ· ${ds.label}<br>
-                Replace with Imagen-generated photo
-            </div>`;
+        $('g-ph').innerHTML = '<div class="ph-label" style="color:' + ds.color + '">' + ds.label + '<br>Add image to images/ folder</div>';
     }
 
-    // Reset answer buttons
-    ['btn-L','btn-R'].forEach(id => {
-        $(id).disabled  = false;
-        $(id).className = 'ans-btn';
-    });
+    ['btn-L','btn-R'].forEach(id => { $(id).disabled = false; $(id).className = 'ans-btn'; });
 
     if (G.mode === 'timed') startTimer();
 }
 
 function updateMult() {
-    const m = multiplier();
     const el = $('g-mult');
     if (G.streak >= 5)
-        el.innerHTML = `נ”¥ Streak ֳ—${G.streak} ג€” <span class="x3">3ֳ— MULTIPLIER!</span>`;
+        el.innerHTML = 'Streak x' + G.streak + ' &mdash; <span class="x3">3x MULTIPLIER!</span>';
     else if (G.streak >= 3)
-        el.innerHTML = `ג¡ Streak ֳ—${G.streak} ג€” <span class="x2">2ֳ— MULTIPLIER</span>`;
+        el.innerHTML = 'Streak x' + G.streak + ' &mdash; <span class="x2">2x MULTIPLIER</span>';
     else if (G.streak > 0)
-        el.textContent = `Streak: ${G.streak} ג€” reach 3 for 2ֳ—`;
+        el.textContent = 'Streak: ' + G.streak + ' - reach 3 for 2x!';
     else
         el.textContent = '';
 }
 
-// ג”€ג”€ Timer ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 function startTimer() {
     const wrap = $('g-timer'), bar = $('g-tbar');
     wrap.classList.add('on');
     G.timeLeft = 8000;
     const t0 = Date.now();
-
     clearInterval(G.timerID);
-    G.timerID = setInterval(() => {
+    G.timerID = setInterval(function() {
         G.timeLeft = Math.max(0, 8000 - (Date.now() - t0));
-        const pct = G.timeLeft / 80;   // 0ג€“100
+        const pct = G.timeLeft / 80;
         bar.style.width = pct + '%';
-        bar.className   = 'timer-bar' + (pct < 30 ? ' crit' : pct < 60 ? ' warn' : '');
+        bar.className = 'timer-bar' + (pct < 30 ? ' crit' : pct < 60 ? ' warn' : '');
         if (G.timeLeft <= 0) { clearInterval(G.timerID); if (!G.answered) answer(null); }
     }, 50);
 }
@@ -545,14 +542,12 @@ function stopTimer() {
     $('g-timer').classList.remove('on');
 }
 
-// ג”€ג”€ Answer ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 function answer(choice) {
     if (G.answered) return;
     G.answered = true;
-
     if (G.mode === 'timed') { G.timeTaken = 8000 - G.timeLeft; stopTimer(); }
 
-    const img       = G.queue[G.round];
+    const img = G.queue[G.round];
     const isCorrect = choice === img.answer;
 
     $('btn-L').disabled = true;
@@ -565,7 +560,6 @@ function answer(choice) {
         $('btn-R').classList.add(isCorrect ? 'correct' : 'wrong');
         if (!isCorrect) $('btn-L').classList.add('correct');
     } else {
-        // time's up ג€” reveal correct
         $(img.answer === 'left' ? 'btn-L' : 'btn-R').classList.add('correct');
     }
 
@@ -574,15 +568,14 @@ function answer(choice) {
         G.correct++;
         G.streak++;
         if (G.streak > G.maxStreak) G.maxStreak = G.streak;
-        const m    = multiplier();
-        const base = 100;
-        let   tb   = 0;
+        const m = multiplier();
+        let tb = 0;
         if (G.mode === 'timed') {
-            if      (G.timeTaken < 2000) tb = 50;
+            if (G.timeTaken < 2000) tb = 50;
             else if (G.timeTaken < 4000) tb = 30;
             else if (G.timeTaken < 6000) tb = 15;
         }
-        pts = Math.round((base + tb) * m);
+        pts = Math.round((100 + tb) * m);
         G.score += pts;
     } else {
         G.streak = 0;
@@ -590,7 +583,7 @@ function answer(choice) {
 
     showToast(isCorrect, pts, choice === null);
 
-    setTimeout(() => {
+    setTimeout(function() {
         G.round++;
         nextRound();
         $('g-score').textContent    = G.score.toLocaleString();
@@ -600,54 +593,68 @@ function answer(choice) {
     }, 1400);
 }
 
-// ג”€ג”€ Toast ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 function showToast(ok, pts, timeout) {
-    const t = $('toast');
+    const t    = $('toast');
+    const wrap = $('t-icon-wrap');
+    const svg  = $('t-icon-svg');
+    const checkPath  = '<polyline points="20,6 9,17 4,12"/>';
+    const crossPath  = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+    const clockPath  = '<circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,15"/>';
+
     if (timeout) {
         t.className = 'toast fail';
-        $('t-icon').textContent = 'ג±ן¸';
+        wrap.className = 'toast-icon time';
+        svg.innerHTML = clockPath;
         $('t-text').textContent = "Time's up!";
         $('t-pts' ).textContent = '+0';
     } else if (ok) {
         const m = multiplier();
         t.className = 'toast ok';
-        $('t-icon').textContent = m >= 3 ? 'נ”¥' : m >= 2 ? 'ג¡' : 'ג…';
-        $('t-text').textContent = m >= 3 ? 'AMAZING! 3ֳ—' : m >= 2 ? 'Great! 2ֳ—' : 'Correct!';
-        $('t-pts' ).textContent = `+${pts}`;
+        wrap.className = 'toast-icon ok';
+        svg.innerHTML = checkPath;
+        $('t-text').textContent = m >= 3 ? 'AMAZING! 3x' : m >= 2 ? 'Great! 2x' : 'Correct!';
+        $('t-pts' ).textContent = '+' + pts;
     } else {
         t.className = 'toast fail';
-        $('t-icon').textContent = 'ג';
+        wrap.className = 'toast-icon fail';
+        svg.innerHTML = crossPath;
         $('t-text').textContent = 'Wrong!';
         $('t-pts' ).textContent = '+0';
     }
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 1200);
+    setTimeout(function() { t.classList.remove('show'); }, 1200);
 }
 
-// ג”€ג”€ End ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€ג”€
 function endGame() {
     const acc = Math.round(G.correct / G.totalRounds * 100);
-    const [icon, title] =
-        acc === 100 ? ['נ†','Perfect Score!'] :
-        acc >= 80   ? ['ג­','Excellent!']     :
-        acc >= 60   ? ['נ‘','Good Effort!']   :
-                      ['נ’×','Keep Practicing!'];
+    var bgColor, svgPath, title;
+    if (acc === 100) {
+        bgColor = '#F59E0B'; title = 'Perfect Score!';
+        svgPath = '<polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"/>';
+    } else if (acc >= 80) {
+        bgColor = '#10B981'; title = 'Excellent!';
+        svgPath = '<polyline points="20,6 9,17 4,12"/>';
+    } else if (acc >= 60) {
+        bgColor = '#3B82F6'; title = 'Good Effort!';
+        svgPath = '<polyline points="20,6 9,17 4,12"/>';
+    } else {
+        bgColor = '#6B7280'; title = 'Keep Practicing!';
+        svgPath = '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>';
+    }
 
-    $('r-icon'   ).textContent = icon;
+    $('r-icon-wrap').style.background = bgColor;
+    $('r-icon-svg').innerHTML = svgPath;
     $('r-title'  ).textContent = title;
     $('r-score'  ).textContent = G.score.toLocaleString();
     $('r-acc'    ).textContent = acc + '%';
     $('r-streak' ).textContent = G.maxStreak;
-    $('r-correct').textContent = `${G.correct}/10`;
-    $('r-mode'   ).textContent = G.mode === 'timed' ? 'ג¡ Timed' : 'נ§˜ Normal';
+    $('r-correct').textContent = G.correct + '/10';
+    $('r-mode'   ).textContent = G.mode === 'timed' ? 'Timed' : 'Normal';
 
     saveScore();
     showScreen('s-results');
 }
 
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  LOCAL STORAGE ג€” SCORES
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
 function loadScores() {
     try { return JSON.parse(localStorage.getItem('hs_scores') || '[]'); }
     catch { return []; }
@@ -655,103 +662,57 @@ function loadScores() {
 
 function saveScore() {
     const scores = loadScores();
-    scores.push({
-        name: G.name, score: G.score, mode: G.mode,
-        acc: Math.round(G.correct / G.totalRounds * 100),
-        date: new Date().toLocaleDateString()
-    });
-    scores.sort((a, b) => b.score - a.score);
+    scores.push({ name: G.name, score: G.score, mode: G.mode,
+                  acc: Math.round(G.correct / G.totalRounds * 100),
+                  date: new Date().toLocaleDateString() });
+    scores.sort(function(a,b) { return b.score - a.score; });
     localStorage.setItem('hs_scores', JSON.stringify(scores.slice(0, 25)));
     refreshBest();
 }
 
 function refreshBest() {
     const top = loadScores()[0];
-    $('best-val').textContent = top ? top.score.toLocaleString() : 'ג€”';
+    $('best-val').textContent = top ? top.score.toLocaleString() : '--';
 }
 
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  LEADERBOARD
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
 function goLeaderboard() { renderLB(); showScreen('s-lb'); }
 
 function renderLB() {
     const scores = loadScores().slice(0, 10);
     const list   = $('lb-list');
     if (!scores.length) {
-        list.innerHTML = '<li style="padding:20px;text-align:center;color:var(--muted)">No scores yet ג€” be the first!</li>';
+        list.innerHTML = '<li style="padding:20px;text-align:center;color:var(--muted)">No scores yet - be the first!</li>';
         return;
     }
-    list.innerHTML = scores.map((s, i) => {
-        const rc = i === 0 ? 'g' : i === 1 ? 's' : i === 2 ? 'b' : '';
-        const rl = i === 0 ? 'נ¥‡' : i === 1 ? 'נ¥ˆ' : i === 2 ? 'נ¥‰' : i + 1;
-        return `<li class="lb-item">
-            <div class="lb-rank ${rc}">${rl}</div>
-            <div class="lb-name">${esc(s.name)}</div>
-            <div>
-                <div class="lb-score">${s.score.toLocaleString()}</div>
-                <div class="lb-meta">${s.acc}% ֲ· ${s.date} ֲ· ${s.mode === 'timed' ? 'ג¡' : 'נ§˜'}</div>
-            </div>
-        </li>`;
+    list.innerHTML = scores.map(function(s, i) {
+        var rc = i === 0 ? 'g' : i === 1 ? 's' : i === 2 ? 'b' : '';
+        var rl = '#' + (i + 1);
+        var modeCls = s.mode === 'timed' ? 'timed' : 'normal';
+        var modeLabel = s.mode === 'timed' ? 'Timed' : 'Normal';
+        return '<li class="lb-item">' +
+            '<div class="lb-rank ' + rc + '">' + rl + '</div>' +
+            '<div class="lb-name">' + esc(s.name) + '</div>' +
+            '<div>' +
+                '<div class="lb-score">' + s.score.toLocaleString() + '</div>' +
+                '<div class="lb-meta">' + s.acc + '% &middot; ' + s.date + ' &middot; <span class="mode-badge ' + modeCls + '">' + modeLabel + '</span></div>' +
+            '</div>' +
+        '</li>';
     }).join('');
 }
 
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  SCREEN MANAGEMENT
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
 function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
     $(id).classList.add('active');
     if (id === 's-menu') refreshBest();
 }
 
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  KEYBOARD SHORTCUTS  (ג† / ג†’ or L / R during game)
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', function(e) {
     if (!$('s-game').classList.contains('active') || G.answered) return;
     if (e.key === 'ArrowLeft'  || e.key.toLowerCase() === 'l') answer('left');
     if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'r') answer('right');
 });
 
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  FIREBASE ג€” ONLINE LEADERBOARD (optional)
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-/*
- * HOW TO ENABLE:
- * 1. Go to console.firebase.google.com ג†’ create project ג†’ Firestore Database
- * 2. Add Firebase SDK (paste before </body>):
- *    <script type="module">
- *      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-app.js";
- *      import { getFirestore, collection, addDoc, getDocs, orderBy, limit, query }
- *             from "https://www.gstatic.com/firebasejs/10.x.x/firebase-firestore.js";
- *
- *      const app = initializeApp({
- *          apiKey:    "YOUR_API_KEY",
- *          authDomain: "YOUR_PROJECT.firebaseapp.com",
- *          projectId:  "YOUR_PROJECT_ID",
- *      });
- *      const db = getFirestore(app);
- *
- *      // Call these instead of / in addition to localStorage functions:
- *      window.saveOnline = async (name, score, mode, acc) =>
- *          addDoc(collection(db, 'scores'), { name, score, mode, acc, ts: new Date() });
- *
- *      window.loadOnline = async () => {
- *          const q  = query(collection(db, 'scores'), orderBy('score','desc'), limit(10));
- *          const sn = await getDocs(q);
- *          return sn.docs.map(d => d.data());
- *      };
- *    <\/script>
- */
-
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
-//  INIT
-// ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•
 refreshBest();
 </script>
 </body>
 </html>
-
-
-
